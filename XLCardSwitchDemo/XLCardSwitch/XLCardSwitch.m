@@ -43,6 +43,7 @@
 }
 
 - (void)addCollectionView {
+    
     //避免UINavigation对UIScrollView产生的偏移问题
     [self addSubview:[UIView new]];
     XLCardSwitchFlowLayout *flowLayout = [[XLCardSwitchFlowLayout alloc] init];
@@ -52,12 +53,22 @@
     };
     self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:flowLayout];
     self.collectionView.showsHorizontalScrollIndicator = false;
+//    self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     self.collectionView.backgroundColor = [UIColor clearColor];
     [self.collectionView registerClass:[XLCardCell class] forCellWithReuseIdentifier:@"XLCardCell"];
     self.collectionView.userInteractionEnabled = true;
+    self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     [self addSubview:self.collectionView];
+    
+    UIView *redLine = [UIView new];
+    redLine.backgroundColor = UIColor.redColor;
+    redLine.frame = CGRectMake(self.bounds.size.width/2.f-0.5, 0, 1, self.bounds.size.height);
+    [self addSubview:redLine];
+    
+    NSLog(@"");
+    
 }
 
 - (void)layoutSubviews {
@@ -97,7 +108,7 @@
     NSInteger maxIndex = [self.collectionView numberOfItemsInSection:0] - 1;
     _selectedIndex = _selectedIndex <= 0 ? 0 : _selectedIndex;
     _selectedIndex = _selectedIndex >= maxIndex ? maxIndex : _selectedIndex;
-    [self scrollToCenterAnimated:true];
+    [self scrollToCenterAnimated:false];
 }
 
 //滚动到中间
@@ -112,6 +123,10 @@
     self.dragAtIndex = _selectedIndex;
 }
 
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset API_AVAILABLE(ios(5.0)) {
+    NSLog(@"aaron: velocity x is %f, targetContentOffset is %f", velocity.x,(*targetContentOffset).x);
+}
+
 //手指拖动停止
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (!_pagingEnabled) {return;}
@@ -120,6 +135,15 @@
         [self fixCellToCenter];
     });
 }
+
+//// called when scroll view grinds to a halt
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+//    if (!_pagingEnabled) {return;}
+//    self.dragEndX = scrollView.contentOffset.x;
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self fixCellToCenter];
+//    });
+//}
 
 //点击方法
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {

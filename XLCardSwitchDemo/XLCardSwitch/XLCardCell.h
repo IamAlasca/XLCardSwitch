@@ -13,4 +13,6 @@
 
 @property (nonatomic, strong) XLCardModel *model;
 
+- (void)setImageAlpha:(CGFloat)alpha;
+
 @end

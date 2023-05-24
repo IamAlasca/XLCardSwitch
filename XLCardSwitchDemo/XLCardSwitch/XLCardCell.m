@@ -40,15 +40,25 @@
     
     self.textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, imageViewHeight, self.bounds.size.width, labelHeight)];
     self.textLabel.textColor = [UIColor colorWithRed:102.0f/255.0f green:102.0f/255.0f blue:102.0f/255.0f alpha:1];
-    self.textLabel.font = [UIFont systemFontOfSize:22];
+    self.textLabel.font = [UIFont systemFontOfSize:16];
     self.textLabel.textAlignment = NSTextAlignmentCenter;
-    self.textLabel.adjustsFontSizeToFitWidth = true;
+//    self.textLabel.adjustsFontSizeToFitWidth = true;
     [self addSubview:self.textLabel];
 }
 
 - (void)setModel:(XLCardModel *)model {
-    self.imageView.image = [UIImage imageNamed:model.imageName];
+//    self.imageView.image = [UIImage imageNamed:model.imageName];
+    self.imageView.image = [UIImage imageNamed:@"hot_category"];
+    
     self.textLabel.text = model.title;
 }
 
+- (void)setImageAlpha:(CGFloat)alpha {
+    self.imageView.alpha = alpha;
+    
+    self.textLabel.alpha = alpha;
+    
+    
+//    NSLog(@"aaron: come to set alpha is %f", alpha);
+}
 @end

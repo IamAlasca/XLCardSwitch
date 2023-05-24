@@ -4,7 +4,7 @@
 //
 //  Created by Apple on 2017/1/20.
 //  Copyright © 2017年 Apple. All rights reserved.
-// 
+//
 
 #import "DemoViewController.h"
 #import "XLCardSwitch.h"
@@ -56,14 +56,14 @@
 }
 
 - (void)addImageView {
-    self.imageView = [[UIImageView alloc] init];
-    [self.view addSubview:self.imageView];
-    
-    //毛玻璃效果
-    UIBlurEffect* effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    UIVisualEffectView* effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
-    effectView.frame = self.view.bounds;
-    [self.imageView addSubview:effectView];
+//    self.imageView = [[UIImageView alloc] init];
+//    [self.view addSubview:self.imageView];
+//
+//    //毛玻璃效果
+//    UIBlurEffect* effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+//    UIVisualEffectView* effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
+//    effectView.frame = self.view.bounds;
+//    [self.imageView addSubview:effectView];
 }
 
 - (void)addCardSwitch {
@@ -126,7 +126,20 @@
     //更新背景图
     XLCardModel *model = self.models[index];
     self.imageView.image = [UIImage imageNamed:model.imageName];
+    
+    [self performHapticFeedback];
+    
 }
+
+- (void)performHapticFeedback {
+    if (@available(iOS 10.0, *)) {
+        // 创建震动反馈生成器
+        UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleMedium];
+        // 开始震动
+        [generator impactOccurred];
+    }
+}
+
 
 #pragma mark -
 #pragma mark 手动切换方法
